@@ -13,9 +13,9 @@ axios.interceptors.response.use(async response => {
     try {
         await sleep(1000);
         return response;
-    } catch (error) {
-        console.log(error);
-        return await Promise.reject(error);
+    } catch (e) {
+        console.log(e);
+        return await Promise.reject(e);
     }
 })
 
