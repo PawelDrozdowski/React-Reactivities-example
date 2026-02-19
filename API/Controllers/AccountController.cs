@@ -1,5 +1,4 @@
 using System.Security.Claims;
-using System.Threading.Tasks;
 using API.DTOs;
 using API.Services;
 using Domain;
@@ -49,11 +48,13 @@ namespace API.Controllers
         {
             if (await _userManager.Users.AnyAsync(x => x.Email == registerDto.Email))
             {
-                return BadRequest("Email taken");
+                ModelState.AddModelError(nameof(registerDto.Email), "Email taken");
+                return ValidationProblem();
             }
             if (await _userManager.Users.AnyAsync(x => x.UserName == registerDto.Username))
             {
-                return BadRequest("Username taken");
+                ModelState.AddModelError(nameof(registerDto.Username), "Username taken");
+                return ValidationProblem();
             }
 
             var user = new AppUser
