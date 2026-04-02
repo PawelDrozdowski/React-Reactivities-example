@@ -1,8 +1,8 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import { Activity } from '../models/activity';
+import { Activity, ActivityFormValues } from '../models/activity';
 import { toast } from 'react-toastify';
-import { router } from '../router/Routes';
-import { store } from '../stores/store';
+import { router } from '../../router/Routes';
+import { store } from '../../stores/store';
 import { User, UserFormValues } from '../models/user';
 
 const sleep = (delay: number) => {
@@ -72,10 +72,10 @@ const requests = {
 const Activities = {
     list: () => requests.get<Activity[]>("/activities"),
     details: (id: string) => requests.get<Activity>(`/activities/${id}`),
-    create: (body: Activity) => requests.post<void>("/activities", body),
-    update: (body: Activity) => requests.put<void>(`/activities/${body.id}`, body),
-    delete: (id: string) => requests.del<void>(`/activities/${id}`)
-
+    create: (body: ActivityFormValues) => requests.post<void>("/activities", body),
+    update: (body: ActivityFormValues) => requests.put<void>(`/activities/${body.id}`, body),
+    delete: (id: string) => requests.del<void>(`/activities/${id}`),
+    attend: (id: string) => requests.post<void>(`/activities/${id}/attend`, {})
 }
 
 const Account = {

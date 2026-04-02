@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useStore } from "../../../stores/store";
 import { observer } from "mobx-react-lite";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Activity } from "../../../models/activity";
+import { Activity, ActivityFormValues } from "../../../app/models/activity";
 import { Button, Segment, Header } from "semantic-ui-react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { Formik, Form } from "formik";
@@ -17,18 +17,10 @@ import { v4 as uuid } from "uuid"
 
 export default observer(function ActivityForm() {
     const { activityStore } = useStore();
-    const { loading, updateActivity, createActivity, loadActivity, loadingInitial } = activityStore;
+    const { updateActivity, createActivity, loadActivity, loadingInitial } = activityStore;
     const { id } = useParams();
     const navigate = useNavigate();
-    const [activity, setActivity] = useState<Activity>({
-        id: "",
-        title: "",
-        date: null,
-        description: "",
-        category: "",
-        city: "",
-        venue: ""
-    });
+    const [activity, setActivity] = useState<ActivityFormValues>(new ActivityFormValues());
     const validationSchema = Yup.object({
         title: Yup.string().required("The title is required"),
         description: Yup.string().required("The description is required"),
@@ -39,10 +31,10 @@ export default observer(function ActivityForm() {
     })
 
     useEffect(() => {
-        if (id) loadActivity(id).then(activity => { if (activity) setActivity(activity) })
+        if (id) loadActivity(id).then(activity => { if (activity) setActivity(new ActivityFormValues(activity)) })
     }, [id, loadActivity])
 
-    async function handleFormSubmit(activity: Activity) {
+    async function handleFormSubmit(activity: ActivityFormValues) {
         if (activity.id) {
             await updateActivity(activity);
             navigate(`/activities/${activity.id}`);
@@ -82,7 +74,7 @@ export default observer(function ActivityForm() {
                         <MyTextInput placeholder="venue" name="venue" />
                         <Button
                             disabled={isSubmitting || !dirty || !isValid}
-                            loading={loading}
+                            loading={isSubmitting}
                             floated="right"
                             positive
                             type="submit"
