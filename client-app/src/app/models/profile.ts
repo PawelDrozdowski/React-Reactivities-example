@@ -9,4 +9,11 @@ export class Profile {
     username: string;
     displayName: string;
     image?: string;
+    photos?: Photo[];
+}
+
+export interface Photo {
+    id: string,
+    url: string,
+    isMain: boolean
 }
