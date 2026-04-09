@@ -10,6 +10,7 @@ export class Profile {
     displayName: string;
     image?: string;
     photos?: Photo[];
+    bio?: string;
 }
 
 export interface Photo {
