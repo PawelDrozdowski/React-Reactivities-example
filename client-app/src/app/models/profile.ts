@@ -10,6 +10,9 @@ export class Profile {
     displayName: string;
     image?: string;
     photos?: Photo[];
+    followersCount = 0;
+    followingCount = 0;
+    following = false;
     bio?: string;
 }
 
